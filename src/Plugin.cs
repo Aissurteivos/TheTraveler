@@ -45,6 +45,7 @@ namespace Thetraveler
         public LeapBurst burst = new LeapBurst();
         //角色能力的状态和冷却时间
         bool time_skill = false;
+        bool burst_keydown = false;
         float burst_cd = 0f;
         //Remix菜单实例
         private OptionsMenu optionsMenuInstance;
@@ -151,8 +152,9 @@ namespace Thetraveler
                 }
 
                 //如果在技能中松开按键，结束子弹时间，设置冷却，判断是否弹射
-                if (Input.GetKeyDown(Burst.CurrentBinding(0)) && burst_cd == 0f) 
+                if (Input.GetKey(Burst.CurrentBinding(0)) && burst_cd == 0f && !burst_keydown) 
                 {
+                    burst_keydown = true;
                     burst_cd = 10f;
 
                     //有方向键输入且满足条件时开始弹射
@@ -208,6 +210,9 @@ namespace Thetraveler
                         self.animation = Player.AnimationIndex.Flip;
                         self.noGrabCounter = 5; 
                     }
+                }
+                if (!Input.GetKey(Burst.CurrentBinding(0)) && burst_keydown) {
+                    burst_keydown = false;
                 }
             }
         }
