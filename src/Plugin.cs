@@ -150,65 +150,65 @@ namespace Thetraveler
                     player_skill = false;
                 }
 
-                    //如果在技能中松开按键，结束子弹时间，设置冷却，判断是否弹射
-                    if (Input.GetKeyDown(Burst.CurrentBinding(0)) && player_skill_cd == 0f) 
+                //如果在技能中松开按键，结束子弹时间，设置冷却，判断是否弹射
+                if (Input.GetKeyDown(Burst.CurrentBinding(0)) && player_skill_cd == 0f) 
+                {
+                    player_skill_cd = 10f;
+
+                    //有方向键输入且满足条件时开始弹射
+                    if ((self.input[0].x != 0 || self.input[0].y != 0) && player_can_launch) 
                     {
-                        player_skill_cd = 10f;
+                        burst.Burst(self);
 
-                        //有方向键输入且满足条件时开始弹射
-                        if ((self.input[0].x != 0 || self.input[0].y != 0) && player_can_launch) 
+                        /*---------------------------------------------------------------------------------------------------------------------*/
+                        //以上为视觉效果实现-以下为弹射物理效果实现
+                        /*---------------------------------------------------------------------------------------------------------------------*/
+                        if (self.bodyMode == Player.BodyModeIndex.ZeroG)
                         {
-                            burst.Burst(self);
-
-                            /*---------------------------------------------------------------------------------------------------------------------*/
-                            //以上为视觉效果实现-以下为弹射物理效果实现
-                            /*---------------------------------------------------------------------------------------------------------------------*/
-                            if (self.bodyMode == Player.BodyModeIndex.ZeroG)
+                            self.bodyChunks[0].vel.x = 9f * (float)self.input[0].x;
+                            self.bodyChunks[1].vel.x = 9f * (float)self.input[0].x;
+                            self.bodyChunks[0].vel.y = 9f * (float)self.input[0].y;
+                            self.bodyChunks[1].vel.y = 9f * (float)self.input[0].y;
+                        }
+                        else
+                        {
+                            if (self.bodyMode == Player.BodyModeIndex.ClimbingOnBeam || self.animation == Player.AnimationIndex.HangFromBeam || self.animation == Player.AnimationIndex.VineGrab || self.animation == Player.AnimationIndex.AntlerClimb)
                             {
-                                self.bodyChunks[0].vel.x = 9f * (float)self.input[0].x;
-                                self.bodyChunks[1].vel.x = 9f * (float)self.input[0].x;
-                                self.bodyChunks[0].vel.y = 9f * (float)self.input[0].y;
-                                self.bodyChunks[1].vel.y = 9f * (float)self.input[0].y;
+                                self.bodyMode = Player.BodyModeIndex.Default;
+
+                                self.bodyChunks[0].vel.x = 13f * (float)self.input[0].x;
+                                self.bodyChunks[1].vel.x = 11f * (float)self.input[0].x;
+                                self.bodyChunks[0].vel.y = 3f + 17f * (float)self.input[0].y;
+                                self.bodyChunks[1].vel.y = 3f + 13f * (float)self.input[0].y;
+                            }
+                            else if (self.input[0].x == 0)
+                            {
+                                self.bodyChunks[0].vel.y = 21f * (float)self.input[0].y;
+                                self.bodyChunks[1].vel.y = 15f * (float)self.input[0].y;
+                                self.jumpBoost = 2f;
+                            }
+                            else if (self.input[0].y == 0)
+                            {
+                                self.bodyChunks[0].vel.x = 15f * (float)self.input[0].x;
+                                self.bodyChunks[1].vel.x = 11f * (float)self.input[0].x;
+                                self.bodyChunks[0].vel.y = 5f;
+                                self.bodyChunks[1].vel.y = 5f;
+                                self.jumpBoost = 2f;
                             }
                             else
                             {
-                                if (self.bodyMode == Player.BodyModeIndex.ClimbingOnBeam || self.animation == Player.AnimationIndex.HangFromBeam || self.animation == Player.AnimationIndex.VineGrab || self.animation == Player.AnimationIndex.AntlerClimb)
-                                {
-                                    self.bodyMode = Player.BodyModeIndex.Default;
-
-                                    self.bodyChunks[0].vel.x = 13f * (float)self.input[0].x;
-                                    self.bodyChunks[1].vel.x = 11f * (float)self.input[0].x;
-                                    self.bodyChunks[0].vel.y = 3f + 17f * (float)self.input[0].y;
-                                    self.bodyChunks[1].vel.y = 3f + 13f * (float)self.input[0].y;
-                                }
-                                else if (self.input[0].x == 0)
-                                {
-                                    self.bodyChunks[0].vel.y = 21f * (float)self.input[0].y;
-                                    self.bodyChunks[1].vel.y = 15f * (float)self.input[0].y;
-                                    self.jumpBoost = 2f;
-                                }
-                                else if (self.input[0].y == 0)
-                                {
-                                    self.bodyChunks[0].vel.x = 15f * (float)self.input[0].x;
-                                    self.bodyChunks[1].vel.x = 11f * (float)self.input[0].x;
-                                    self.bodyChunks[0].vel.y = 5f;
-                                    self.bodyChunks[1].vel.y = 5f;
-                                    self.jumpBoost = 2f;
-                                }
-                                else
-                                {
-                                    self.bodyChunks[0].vel.x = 13f * (float)self.input[0].x;
-                                    self.bodyChunks[1].vel.x = 11f * (float)self.input[0].x;
-                                    self.bodyChunks[0].vel.y = 3f + 17f * (float)self.input[0].y;
-                                    self.bodyChunks[1].vel.y = 3f + 13f * (float)self.input[0].y;
-                                    self.jumpBoost = 2f;
-                                }
+                                self.bodyChunks[0].vel.x = 13f * (float)self.input[0].x;
+                                self.bodyChunks[1].vel.x = 11f * (float)self.input[0].x;
+                                self.bodyChunks[0].vel.y = 3f + 17f * (float)self.input[0].y;
+                                self.bodyChunks[1].vel.y = 3f + 13f * (float)self.input[0].y;
+                                self.jumpBoost = 2f;
                             }
-
-                            self.animation = Player.AnimationIndex.Flip;
-                            self.noGrabCounter = 5; 
                         }
+
+                        self.animation = Player.AnimationIndex.Flip;
+                        self.noGrabCounter = 5; 
                     }
+                }
             }
         }
     }
