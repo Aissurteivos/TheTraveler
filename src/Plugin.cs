@@ -44,8 +44,8 @@ namespace Thetraveler
         //LeapBurst效果
         public LeapBurst burst = new LeapBurst();
         //角色能力的状态和冷却时间
-        bool player_skill = false;
-        float player_skill_cd = 0f;
+        bool time_skill = false;
+        float burst_cd = 0f;
         //Remix菜单实例
         private OptionsMenu optionsMenuInstance;
         //检查GhostPlayer是否启用
@@ -106,9 +106,9 @@ namespace Thetraveler
             orig(self, eu);
 
             // 冷却时间每次更新时衰减
-            if (player_skill_cd > 0f) 
+            if (burst_cd > 0f) 
             {
-                player_skill_cd -= 1f; 
+                burst_cd -= 1f; 
             }
 
             //判断是否为TheTraveler角色 并判断是否可以触发技能
@@ -144,16 +144,16 @@ namespace Thetraveler
                 {
                     //蘑菇效果
                     self.mushroomEffect = 1.0f;
-                    player_skill = true;
-                } else if (player_skill == true) {
+                    time_skill = true;
+                } else if (time_skill == true) {
                     self.mushroomEffect = 0f;
-                    player_skill = false;
+                    time_skill = false;
                 }
 
                 //如果在技能中松开按键，结束子弹时间，设置冷却，判断是否弹射
-                if (Input.GetKeyDown(Burst.CurrentBinding(0)) && player_skill_cd == 0f) 
+                if (Input.GetKeyDown(Burst.CurrentBinding(0)) && burst_cd == 0f) 
                 {
-                    player_skill_cd = 10f;
+                    burst_cd = 10f;
 
                     //有方向键输入且满足条件时开始弹射
                     if ((self.input[0].x != 0 || self.input[0].y != 0) && player_can_launch) 
