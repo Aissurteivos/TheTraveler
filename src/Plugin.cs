@@ -141,7 +141,7 @@ namespace Thetraveler
                 }
 
                 //按键且冷却完成并且自己为当前客户端的角色则触发能力
-                if (Input.GetKey(TimeDialate.CurrentBinding(0)) && (!enableGhostPlayer || !GhostPlayerImports.IsNetworkPlayer(self)))
+                if (self.IsPressed(TimeDialate) && (!enableGhostPlayer || !GhostPlayerImports.IsNetworkPlayer(self)))
                 {
                     //蘑菇效果
                     self.mushroomEffect = 1.0f;
@@ -152,7 +152,7 @@ namespace Thetraveler
                 }
 
                 //如果在技能中松开按键，结束子弹时间，设置冷却，判断是否弹射
-                if (Input.GetKey(Burst.CurrentBinding(0)) && burst_cd == 0f && !burst_keydown) 
+                if (self.IsPressed(Burst) && burst_cd == 0f && !burst_keydown) 
                 {
                     burst_keydown = true;
                     burst_cd = 10f;
@@ -211,7 +211,7 @@ namespace Thetraveler
                         self.noGrabCounter = 5; 
                     }
                 }
-                if (!Input.GetKey(Burst.CurrentBinding(0)) && burst_keydown) {
+                if (!self.IsPressed(Burst) && burst_keydown) {
                     burst_keydown = false;
                 }
             }
