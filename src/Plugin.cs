@@ -39,7 +39,7 @@ namespace Thetraveler
         //PlayerGraphic模块
         public PlayerGraphic playerGraphic = new PlayerGraphic();
         //Keyboard/Controller bindings
-        private static readonly PlayerKeybind TimeDialate = PlayerKeybind.Register("thetraveler:timedialation", "The Traveler", "Time Dialation", KeyCode.LeftControl, KeyCode.None);
+        private static readonly PlayerKeybind TimeDilate = PlayerKeybind.Register("thetraveler:timedilation", "The Traveler", "Time Dilation", KeyCode.LeftControl, KeyCode.None);
         private static readonly PlayerKeybind Burst = PlayerKeybind.Register("thetraveler:burst", "The Traveler", "Burst", KeyCode.None, KeyCode.None);
         //LeapBurst效果
         public LeapBurst burst = new LeapBurst();
@@ -83,7 +83,7 @@ namespace Thetraveler
             Futile.atlasManager.LoadAtlas("atlases/travelerlegs");
             Futile.atlasManager.LoadAtlas("atlases/travelerheadC"); 
 
-            TimeDialate.Description = "Held to slow down time as The Traveller.";
+            TimeDilate.Description = "Held to slow down time as The Traveller.";
             Burst.Description = "Triggers the Traveller's burst ability.";
             
 
@@ -141,7 +141,7 @@ namespace Thetraveler
                 }
 
                 //按键且冷却完成并且自己为当前客户端的角色则触发能力
-                if (self.IsPressed(TimeDialate) && (!enableGhostPlayer || !GhostPlayerImports.IsNetworkPlayer(self)))
+                if (self.IsPressed(TimeDilate) && (!enableGhostPlayer || !GhostPlayerImports.IsNetworkPlayer(self)))
                 {
                     //蘑菇效果
                     self.mushroomEffect = 1.0f;
