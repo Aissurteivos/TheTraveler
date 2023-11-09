@@ -43,6 +43,9 @@
             <HintPath>..\..\Backups\Rain World\Rain World References\SlugBase.dll</HintPath>
         </Reference>
         
+        <Reference Include="ImprovedInput">
+            <HintPath>..\..\Backups\Rain World\Rain World References\ImprovedInput.dll</HintPath>
+        </Reference>
         <Reference Include="MonoMod">
             <HintPath>..\..\Backups\Rain World\Rain World References\BepInEx\core\MonoMod.dll</HintPath>
         </Reference>

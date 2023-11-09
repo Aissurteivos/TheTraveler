@@ -22,6 +22,7 @@ using Smoke;
 using IL;
 using MonoMod.ModInterop;
 using static Thetraveler.GhostPlayerImports;
+using ImprovedInput;
 
 namespace Thetraveler 
 {
@@ -37,6 +38,9 @@ namespace Thetraveler
         public static readonly SlugcatStats.Name YourSlugID = new SlugcatStats.Name("TheTraveler", false);
         //PlayerGraphic模块
         public PlayerGraphic playerGraphic = new PlayerGraphic();
+        //Keyboard/Controller bindings
+        private static readonly PlayerKeybind TimeDialate = PlayerKeybind.Register("thetraveler:timedialation", "The Traveler", "Time Dialation", KeyCode.LeftControl, KeyCode.None);
+        private static readonly PlayerKeybind Burst = PlayerKeybind.Register("thetraveler:burst", "The Traveler", "Burst", KeyCode.None, KeyCode.None);
         //LeapBurst效果
         public LeapBurst burst = new LeapBurst();
         //角色能力的状态和冷却时间
@@ -77,6 +81,9 @@ namespace Thetraveler
             Futile.atlasManager.LoadAtlas("atlases/travelerhips");
             Futile.atlasManager.LoadAtlas("atlases/travelerlegs");
             Futile.atlasManager.LoadAtlas("atlases/travelerheadC"); 
+
+            TimeDialate.Description = "Held to slow down time as The Traveller.";
+            Burst.Description = "Triggers the Traveller's burst ability.";
             
 
             //加载Remix菜单
@@ -133,21 +140,19 @@ namespace Thetraveler
                 }
 
                 //按键且冷却完成并且自己为当前客户端的角色则触发能力
-                if (Input.GetKey(optionsMenuInstance.skillKeyCode.Value) && player_skill_cd == 0f && (!enableGhostPlayer || !GhostPlayerImports.IsNetworkPlayer(self)))
-                {
-                    player_skill = true;
-                }
-
-                if (player_skill == true) 
+                if (Input.GetKey(TimeDialate.CurrentBinding(0)) && (!enableGhostPlayer || !GhostPlayerImports.IsNetworkPlayer(self)))
                 {
                     //蘑菇效果
                     self.mushroomEffect = 1.0f;
+                    player_skill = true;
+                } else if (player_skill == true) {
+                    self.mushroomEffect = 0f;
+                    player_skill = false;
+                }
 
                     //如果在技能中松开按键，结束子弹时间，设置冷却，判断是否弹射
-                    if (!Input.GetKey(optionsMenuInstance.skillKeyCode.Value)) 
-                    { 
-                        self.mushroomEffect = 0f;
-                        player_skill = false;
+                    if (Input.GetKeyDown(Burst.CurrentBinding(0)) && player_skill_cd == 0f) 
+                    {
                         player_skill_cd = 10f;
 
                         //有方向键输入且满足条件时开始弹射
@@ -203,8 +208,7 @@ namespace Thetraveler
                             self.animation = Player.AnimationIndex.Flip;
                             self.noGrabCounter = 5; 
                         }
-                    }  
-                }
+                    }
             }
         }
     }
