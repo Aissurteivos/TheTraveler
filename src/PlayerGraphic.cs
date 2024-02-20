@@ -19,7 +19,7 @@ public class PlayerGraphic
         modules = new ConditionalWeakTable<PlayerGraphics, PlayerGraphicsModule>();
         On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
         On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
-        On.PlayerGraphics.Update += PlayerGraphics_Update;
+        On.PlayerGraphics.Update += PlayerGraphics_Update;sdfsdffds
         On.PlayerGraphics.ctor += PlayerGraphics_ctor;
     }
 
